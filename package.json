@@ -1,0 +1,30 @@
+{
+  "name": "friendface-buwilliams",
+  "version": "1.0.0",
+  "description": "Simple REST HTTP server example",
+  "scripts": {
+    "dev": "node src/server/index.js",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/buwilliams/friendface-buwilliams.git"
+  },
+  "author": "Buddy Williams <buddywilliams@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/buwilliams/friendface-buwilliams/issues"
+  },
+  "homepage": "https://github.com/buwilliams/friendface-buwilliams#readme",
+  "dependencies": {
+    "csv": "^5.3.2",
+    "csv-parse": "^4.15.1",
+    "express": "^4.17.1",
+    "express-rate-limit": "^5.2.3",
+    "lodash": "^4.17.20",
+    "luxon": "^1.25.0"
+  },
+  "devDependencies": {
+    "jest": "^26.6.3"
+  }
+}
