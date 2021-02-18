@@ -1,6 +1,6 @@
-# Friendface
+# SocialMedia
 
-JSON REST-style API that analyzes data from Friendface, a totally
+JSON REST-style API that analyzes data from SocialMedia, a totally
 legit social media platform. You may view [original project instructions here.](INSTRUCTIONS.md) Additionally, to view the [developer notes go here.](DESIGN.md)
 
 ## Features and Developer Notes

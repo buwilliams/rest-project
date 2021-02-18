@@ -38,7 +38,7 @@ app.use(function (err, req, res, next) {
 });
 
 app.listen(port, async () => {
-    const store = await ingest("friendface.csv");
+    const store = await ingest("socialmedia.csv");
     app.locals.store = store;
     app.locals.popular = popular(store);
     app.locals.fans = fans(store);

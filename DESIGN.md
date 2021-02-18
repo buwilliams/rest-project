@@ -101,7 +101,7 @@
 - Write TODO list (to be organized and think out various concerns)
 - Setup `package.json` with scripts for starting server and running tests
 - Install dependencies: `express.js`, `express-rate-limit` (since it's a REST API), `csv` (parser), `jest` (for unit testing)
-- Organize project (/src/server/* dir, move friendface.csv to /src/server/data/*)
+- Organize project (/src/server/* dir, move socialmedia.csv to /src/server/data/*)
 - Setup express server with a basic route and rate limiting
 - Handle 500 and 404 http errors
 - Write first test (ensure test framework is running correctly)

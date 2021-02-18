@@ -1,5 +1,5 @@
 {
-  "name": "friendface-buwilliams",
+  "name": "socialmedia",
   "version": "1.0.0",
   "description": "Simple REST HTTP server example",
   "scripts": {
@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/buwilliams/friendface-buwilliams.git"
+    "url": "git+https://github.com/buwilliams/socialmedia.git"
   },
   "author": "Buddy Williams <buddywilliams@gmail.com>",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/buwilliams/friendface-buwilliams/issues"
+    "url": "https://github.com/buwilliams/socialmedia/issues"
   },
-  "homepage": "https://github.com/buwilliams/friendface-buwilliams#readme",
+  "homepage": "https://github.com/buwilliams/socialmedia#readme",
   "dependencies": {
     "csv": "^5.3.2",
     "csv-parse": "^4.15.1",

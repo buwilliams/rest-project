@@ -1,8 +1,8 @@
-# Friendface
+# SocialMedia
 
 ## Project Description
 
-Implement a JSON REST-style API that analyzes data from Friendface, a totally
+Implement a JSON REST-style API that analyzes data from SocialMedia, a totally
 legit social media platform.
 
 ## Instructions
@@ -16,8 +16,8 @@ legit social media platform.
 * Tools are up to you. Use whatever language/framework you’re most
   familiar with.
 
-* Friendface is a little behind the times so its API serves data in CSV instead
-  of JSON. The accompanying [friendface.csv](friendface.csv) file contains data
+* SocialMedia is a little behind the times so its API serves data in CSV instead
+  of JSON. The accompanying [socialmedia.csv](socialmedia.csv) file contains data
   about the "likes" that your posts have received.
 
 * Ingest the CSV and expose four REST-style `GET` routes that return the following data:
