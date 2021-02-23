@@ -1,14 +1,16 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const request = require('supertest');
-
+const _ = require('lodash');
 const ingest = require('./data/ingest.js');
 const popular = require('./data/summary/popular.js');
 const fans = require('./data/summary/fans.js');
 const popularDays = require('./data/summary/popular_days.js');
 const streaks = require('./data/summary/streaks.js');
-
 const likesRoutes = require('./likes_routes.js');
 const app = express();
+
+app.use(bodyParser.json());
 likesRoutes(app);
 
 beforeAll(async () => {
@@ -57,4 +59,19 @@ test('should return validation error on bad timezone', async () => {
 test('should return ok on good timezone parameter', async () => {
     const resp = await request(app).get('/users/1/likes?timezone=America/New_York');
     expect(resp.status).toEqual(200);
+});
+
+test('should add a new like resource', async () => {
+    let newLike = { postid: 1, user: 'buddy', date: new Date().toISOString() };
+    const resp = await request(app).post('/users/1/likes').send(newLike);
+    expect(resp.status).toEqual(200);
+    let last = _.last(app.locals.store);
+    expect(last).toEqual(newLike);
+});
+
+test('should return validation error when adding invalid like resource', async () => {
+    let newLike = { postid: 'foo', user: '', date: 'foo' };
+    const resp = await request(app).post('/users/1/likes').send(newLike);
+    expect(resp.status).toEqual(400);
+    expect(resp.body.errors.length).toEqual(3);
 });

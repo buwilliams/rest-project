@@ -17,47 +17,22 @@
             <div class="column column-25">
                 <h2>Menu</h2>
                 <dl>
-                    <dt>
+                    <dt
+                        v-for="(route, idx) in routes"
+                        :key="idx"
+                    >
                         <a
                             href="#"
                             class="button button-outline"
-                            @click.prevent="get('users/1/likes')"
-                        >All Likes</a>
-                    </dt>
-                    <dt>
-                        <a
-                            href="#"
-                            class="button button-outline"
-                            @click.prevent="get('users/1/likes?summary=popular')"
-                        >Most popular posts</a>
-                    </dt>
-                    <dt>
-                        <a
-                            href="#"
-                            class="button button-outline"
-                            @click.prevent="get('users/1/likes?summary=fans')"
-                        >Biggest Fans</a>
-                    </dt>
-                    <dt>
-                        <a
-                            href="#"
-                            class="button button-outline"
-                            @click.prevent="get('users/1/likes?summary=popularDays')"
-                        >Most popular days</a>
-                    </dt>
-                    <dt>
-                        <a
-                            href="#"
-                            class="button button-outline"
-                            @click.prevent="get('users/1/likes?summary=streaks')"
-                        >Streaks</a>
+                            @click.prevent="select(route, idx)"
+                        >{{ route.label }}<small v-show="route.selected">&nbsp;(showing)</small></a>
                     </dt>
                     <dt>
                         <a
                             href="#"
                             class="button"
                             @click.prevent="toggleEditor()"
-                        >Editor</a>
+                        >Editor <small v-show="showEditor">&nbsp;(showing)</small></a>
                     </dt>
                 </dl>
             </div>
@@ -79,14 +54,14 @@
                         >{{ url }}</a>
                     </h2>
                     <pre>
-                    <code>{{ json }}</code>
-                </pre>
+                        <code>{{ json }}</code>
+                    </pre>
                 </div>
                 <div v-show="showEditor">
                     <h2>Editor</h2>
                     <form>
                         <fieldset>
-                            <label for="selectedIdField">Choose Like to Edit or choose NEW LIKE</label>
+                            <label for="selectedIdField">Choose Like to Edit or choose NEW LIKE to create a new like resource</label>
                             <select
                                 id="selectedIdField"
                                 v-model="selectedId"
@@ -137,7 +112,12 @@
                                     placeholder="User"
                                     :disabled="selectedId !== 'new'"
                                 >
-                                <label for="userField">Date</label>
+                                <label for="userField">
+                                    Date (<a
+                                        href="#"
+                                        @click.prevent="edit.date = new Date().toISOString()"
+                                    >click here to set to now</a>)
+                                </label>
                                 <input
                                     id="dateField"
                                     v-model="edit.date"
@@ -152,13 +132,14 @@
                                 <a
                                     href="#"
                                     class="button button-outline"
-                                    @click.prevent="showEditor = false"
+                                    @click.prevent="close"
                                 >Close</a>
                                 <div
-                                    v-show="editorError !== ''"
-                                    class="error"
+                                    v-show="editorResult !== ''"
                                 >
-                                    {{ editorError }}
+                                    <pre>
+                                        <code>{{ editorResult }}</code>
+                                    </pre>
                                 </div>
                             </div>
                         </fieldset>
@@ -176,6 +157,33 @@ const SERVER = 'http://localhost:3000/';
 
 export default {
     data: () => ({
+        routes: [
+            {
+                label: 'All Likes',
+                url: 'users/1/likes',
+                selected: false
+            },
+            {
+                label: 'Most Popular Posts',
+                url: 'users/1/likes?summary=popular',
+                selected: false
+            },
+            {
+                label: 'Biggest Fans',
+                url: 'users/1/likes?summary=fans',
+                selected: false
+            },
+            {
+                label: 'Most Popular Days',
+                url: 'users/1/likes?summary=popularDays',
+                selected: false
+            },
+            {
+                label: 'Streaks',
+                url: 'users/1/likes?summary=streaks',
+                selected: false
+            }
+        ],
         json: '',
         message: '',
         error: '',
@@ -184,7 +192,7 @@ export default {
         allLikes: [],
         selectedId: 'none',
         edit: {},
-        editorError: ''
+        editorResult: ''
     }),
 
     computed: {
@@ -222,6 +230,10 @@ export default {
     watch: {
         selected() {
             this.edit = Object.assign({}, this.selected);
+        },
+
+        selectedId(val, old) {
+            if(val !== old) this.editorResult = '';
         }
     },
 
@@ -232,18 +244,27 @@ export default {
     methods: {
         async load() {
             this.allLikes = await this.getJson('users/1/likes');
-            this.get('users/1/likes');
+            this.select(this.routes[0], 0);
         },
 
         reset() {
+            _.each(this.routes, route => {
+                route.selected = false;
+            });
             this.json = '';
             this.error = '';
             this.message ='';
             this.url = '';
         },
 
-        get(url) {
+        select(route, idx) {
             this.reset();
+            this.routes[idx].selected = true;
+            this.get(route.url);
+        },
+
+        get(url) {
+            this.close();
             this.url = SERVER + url;
             this.showEditor = false;
             this.message = 'Loading...';
@@ -262,20 +283,41 @@ export default {
         async getJson(url) {
             let r = new Request(SERVER + url, {
                 method: 'GET',
-                headers: { 'Content-Type': 'text/javascript' },
+                headers: { 'Content-Type': 'application/json' },
                 mode: 'cors'
             });
             let resp = await fetch(r);
             return await resp.json();
         },
 
-        toggleEditor() {
+        async toggleEditor() {
             this.reset();
-            this.showEditor = !this.showEditor;
+            let newValue = !this.showEditor;
+            if(newValue) this.showEditor = newValue;
+            else this.close();
         },
 
-        save() {
-            // TODO: implement
+        async save() {
+            this.editorResult = '';
+            let method = this.selectedId === 'new' ? 'POST' : 'PATCH';
+            let data = method === 'PATCH' ? [this.edit] : this.edit;
+
+            let r = new Request(SERVER + 'users/1/likes', {
+                method,
+                headers: { 'Content-Type': 'application/json' },
+                mode: 'cors',
+                body: JSON.stringify(data)
+            });
+            let resp = await fetch(r);
+            let json = await resp.json();
+            this.editorResult = JSON.stringify(json, null, 4);
+            this.allLikes = await this.getJson('users/1/likes');
+        },
+
+        close() {
+            this.edit = {};
+            this.selectedId = 'none';
+            this.showEditor = false;
         }
     }
 };

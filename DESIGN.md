@@ -16,8 +16,10 @@
 - `timezone`(String) supplies desires timezone summary data for some requests
 
 **Requests**
-- GET `/users/1/likes` (return all posts)
-- GET `/users/1/likes?limit=1` (return limited likes)
+- GET `/users/1/likes` return all likes
+- POST `/users/1/likes` create new like
+- PATCH `/users/1/likes` update like(s)
+- GET `/users/1/likes?limit=1` return limited likes
 - GET `/users/1/likes?summary=popular`
 - GET `/users/1/likes?summary=popular&limit=1`
 - GET `/users/1/likes?summary=fans`
@@ -89,18 +91,11 @@
 
 ## Backlog
 
-- Malformed query parameter checking isn't perfect
 - Limit streaks by `to` and `from` dates for large datasets
 - Choose sorting order at request level via `sort` query parameter
 
 ## Todo List
 
-- Validate input from html form
-- Submit form to backend via HTTP appropreiate methods (POST, PUT)
-- Endpoint: POST http method for like resource, validate parameters
-- Endpoint: PUT http method for like resource, validate parameters
-- Reload in-memory store on updates
-- Reload Vue memory on updates
 
 ## Done
 
@@ -134,3 +129,9 @@
 - Added Supertest for integration tests
 - Use express-validator to validation query parameters for likes resource
 - Write unit tests for query parameter validation
+- Validate input from html form
+- Submit form to backend via HTTP appropreiate methods (POST, PUT)
+- Endpoint: POST http method for like resource, validate parameters
+- Endpoint: PUT http method for like resource, validate parameters
+- Reload in-memory store on updates
+- Reload Vue memory on updates

@@ -1,6 +1,7 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const rateLimit = require('express-rate-limit');
-var cors = require('cors');
+const cors = require('cors');
 const port = 3000;
 const likesRoutes = require('./likes_routes.js');
 const ingest = require('./data/ingest.js');
@@ -18,6 +19,7 @@ const limiter = rateLimit({
 
 app.use(limiter);
 app.use(cors());
+app.use(bodyParser.json());
 
 app.get('/', function (req, res) {
     res.json({ status: 'ok' });

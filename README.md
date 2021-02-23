@@ -3,6 +3,10 @@
 JSON REST-style API that analyzes data from SocialMedia, a totally
 legit social media platform. You may view [original project instructions here.](INSTRUCTIONS.md) Additionally, to view the [developer notes go here.](DESIGN.md)
 
+## Screenshot
+
+![Screenshot](screenshot.png)
+
 ## Features and Developer Notes
 
 - Proper HTTP response codes (200, 400, 404, 500)
@@ -17,6 +21,7 @@ legit social media platform. You may view [original project instructions here.](
 - Where summaries of dates are needed timezone support is added via `timezone` request parameter. If the parameter is left unspecified then it will default to `'America/New_York'`
 - For summaries with dates, only the default timezone summary is cached. If another timezone is supplied, the summary data will be calculated on that request thread. This could be further optimized.
 - All requests are sorted so that the greatest result is first. For example, the [most popular request](http://localhost:3000/users/1/likes?summary=popular) has the most liked post first in the resulting array
+- [Simple UI](http://localhost:3001/) to work with backend. It uses [JAMStack architecture](https://jamstack.org/).
 
 ## Getting Started
 
@@ -30,6 +35,8 @@ legit social media platform. You may view [original project instructions here.](
 **Likes**
 - GET [/users/1/likes](http://localhost:3000/users/1/likes) All likes
 - GET [/users/1/likes?limit=3](http://localhost:3000/users/1/likes?limit=3) limit likes to three
+- POST [/users/1/likes](http://localhost:3000/users/1/likes) create a new like
+- PATCH [/users/1/likes](http://localhost:3000/users/1/likes) update like(s)
 
 **Most popular posts**
 - GET [/users/1/likes?summary=popular](http://localhost:3000/users/1/likes?summary=popular) top popular posts
