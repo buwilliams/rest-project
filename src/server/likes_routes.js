@@ -99,13 +99,17 @@ module.exports = function(app) {
             }
 
             let store = [...app.locals.store];
-            store.push({
-                postid: req.body.postid,
+
+            let newlike = {
+                postid: parseInt(req.body.postid),
                 user: req.body.user,
                 date: req.body.date,
-            });
+            };
+            store.push(newlike);
+
             updateStore(store);
-            res.json(req.body);
+
+            res.json(newlike);
         });
 
     app.patch('/users/:userId/likes',

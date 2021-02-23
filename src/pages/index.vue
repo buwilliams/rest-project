@@ -211,29 +211,29 @@ export default {
         ids() {
             return _.map(this.allLikes, like => like.postid + '_'+ like.user);
         },
+    },
 
-        selected() {
+    watch: {
+        selectedId(val, old) {
+            if(val !== old) this.editorResult = '';
             if(!this.selectedId) return {};
+
             let parts = this.selectedId.split('_');
             let postid = parseInt(parts[0]);
             let user = parts[1];
             let like = _.find(this.allLikes, { postid, user });
 
-            return like ? like : {
-                postid: 0,
-                user: '',
-                date: new Date().toISOString()
-            };
-        }
-    },
-
-    watch: {
-        selected() {
-            this.edit = Object.assign({}, this.selected);
-        },
-
-        selectedId(val, old) {
-            if(val !== old) this.editorResult = '';
+            if(like) {
+                console.log('found', val);
+                this.edit = Object.assign({}, like);
+            } else {
+                console.log('cannot find', val, this.allLikes);
+                this.edit = {
+                    postid: 0,
+                    user: '',
+                    date: new Date().toISOString()
+                };
+            }
         }
     },
 
