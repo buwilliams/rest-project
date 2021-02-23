@@ -22,7 +22,8 @@ legit social media platform. You may view [original project instructions here.](
 
 - `npm install`
 - `npm run test` run Jest unit tests
-- `npm run dev` start express server on [http://localhost:3000](http://localhost:3000)
+- `npm run dev:server` start express server on [http://localhost:3000](http://localhost:3000)
+- `npm run dev:ui` start nuxt server on [http://localhost:3001](http://localhost:3001)
 
 ## Available HTTP Requests
 

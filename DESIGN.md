@@ -6,6 +6,7 @@
 - Use `summary` query parameter to distingish between data summaries
 - Use maps where possible to avoid loops
 - Endpoint: `/users/1/likes` (assume a user id, accept any id)
+- Use Nuxt.js as the frontend
 
 ## Endpoints and Parameters
 
@@ -94,7 +95,12 @@
 
 ## Todo List
 
-- Delete repo and fresh clone to ensure works on first try
+- Validate input from html form
+- Submit form to backend via HTTP appropreiate methods (POST, PUT)
+- Endpoint: POST http method for like resource, validate parameters
+- Endpoint: PUT http method for like resource, validate parameters
+- Reload in-memory store on updates
+- Reload Vue memory on updates
 
 ## Done
 
@@ -118,3 +124,9 @@
 - Write Getting Started instrucions to README (include other markdown files)
 - Additional tests are needed for streaks to ensure precision
 - Think over possible gaps and refine
+- Delete repo and fresh clone to ensure works on first try
+- Add nuxt.js to project to demonstrate UI skills
+- Create initial layout of page
+- Create menu for page for each request
+- Create output window to show JSON response
+- Create an editor for modifying the likes resource
