@@ -1,171 +1,169 @@
 <template>
     <div class="container">
         <div class="row">
-            <div class="column">
-                <h1 class="header">
+            <div class="header column">
+                <h1>
                     Social Media
                 </h1>
-            </div>
-        </div>
-        <div class="row">
-            <div class="column">
                 <p>
-                    Click any of the buttons below to fetch the HTTP request. You may view the project on <a
+                    Click any of the buttons in the menu below to fetch the HTTP request. You may view the project on <a
                         href="https://github.com/buwilliams/socialmedia"
                         target="_blank"
                     >GitHub here</a>.
                 </p>
-                <a
-                    href="#"
-                    class="button button-outline"
-                    @click.prevent="get('users/1/likes')"
-                >All Likes</a>
-                <a
-                    href="#"
-                    class="button button-outline"
-                    @click.prevent="get('users/1/likes?summary=popular')"
-                >Most popular posts</a>
-                <a
-                    href="#"
-                    class="button button-outline"
-                    @click.prevent="get('users/1/likes?summary=fans')"
-                >Biggest Fans</a>
-                <a
-                    href="#"
-                    class="button button-outline"
-                    @click.prevent="get('users/1/likes?summary=popularDays')"
-                >Most popular days</a>
-                <a
-                    href="#"
-                    class="button button-outline"
-                    @click.prevent="get('users/1/likes?summary=streaks')"
-                >Streaks</a>
-                <a
-                    href="#"
-                    class="button"
-                    @click.prevent="toggleEditor()"
-                >+</a>
             </div>
         </div>
-        <div
-            v-show="hasMessage"
-            class="row"
-        >
-            <div class="column">
-                {{ message }}
+        <div class="row">
+            <div class="column column-25">
+                <h2>Menu</h2>
+                <dl>
+                    <dt>
+                        <a
+                            href="#"
+                            class="button button-outline"
+                            @click.prevent="get('users/1/likes')"
+                        >All Likes</a>
+                    </dt>
+                    <dt>
+                        <a
+                            href="#"
+                            class="button button-outline"
+                            @click.prevent="get('users/1/likes?summary=popular')"
+                        >Most popular posts</a>
+                    </dt>
+                    <dt>
+                        <a
+                            href="#"
+                            class="button button-outline"
+                            @click.prevent="get('users/1/likes?summary=fans')"
+                        >Biggest Fans</a>
+                    </dt>
+                    <dt>
+                        <a
+                            href="#"
+                            class="button button-outline"
+                            @click.prevent="get('users/1/likes?summary=popularDays')"
+                        >Most popular days</a>
+                    </dt>
+                    <dt>
+                        <a
+                            href="#"
+                            class="button button-outline"
+                            @click.prevent="get('users/1/likes?summary=streaks')"
+                        >Streaks</a>
+                    </dt>
+                    <dt>
+                        <a
+                            href="#"
+                            class="button"
+                            @click.prevent="toggleEditor()"
+                        >Editor</a>
+                    </dt>
+                </dl>
             </div>
-        </div>
-        <div
-            v-show="hasJson"
-            class="row"
-        >
-            <div class="column">
-                <p>&nbsp;</p>
-                <h2>
-                    Showing <a
-                        :href="url"
-                        target="_blank"
-                    >{{ url }}</a>
-                </h2>
-                <pre>
+            <div class="column column-75">
+                <div v-show="hasMessage">
+                    {{ message }}
+                </div>
+                <div
+                    v-show="hasError"
+                    class="error"
+                >
+                    {{ error }}
+                </div>
+                <div v-show="hasJson">
+                    <h2>
+                        Showing <a
+                            :href="url"
+                            target="_blank"
+                        >{{ url }}</a>
+                    </h2>
+                    <pre>
                     <code>{{ json }}</code>
                 </pre>
-            </div>
-        </div>
-        <div
-            v-show="hasError"
-            class="row"
-        >
-            <div class="column error">
-                {{ error }}
-            </div>
-        </div>
-        <div
-            v-show="showEditor"
-            class="row"
-        >
-            <div class="column">
-                <p>&nbsp;</p>
-                <h2>Editor</h2>
-                <form>
-                    <fieldset>
-                        <label for="selectedIdField">Choose Like to Edit or choose NEW LIKE</label>
-                        <select
-                            id="selectedIdField"
-                            v-model="selectedId"
-                        >
-                            <option
-                                value="none"
-                                :selected="true"
+                </div>
+                <div v-show="showEditor">
+                    <h2>Editor</h2>
+                    <form>
+                        <fieldset>
+                            <label for="selectedIdField">Choose Like to Edit or choose NEW LIKE</label>
+                            <select
+                                id="selectedIdField"
+                                v-model="selectedId"
                             >
-                                -- select option --
-                            </option>
-                            <option
-                                value="new"
-                            >
-                                NEW LIKE
-                            </option>
-                            <option
-                                v-for="(id, idx) in ids"
-                                :key="idx"
-                                :value="id"
-                            >
-                                {{ id }}
-                            </option>
-                        </select>
-                        <div class="gray">
-                            <div
-                                v-show="selectedId === 'none'"
-                                class="graybg"
-                            />
-                            <label for="postidField">
-                                Post ID
-                                <small v-show="selectedId !== 'new'">(read only)</small>
-                            </label>
-                            <input
-                                id="postidField"
-                                v-model="edit.postid"
-                                type="text"
-                                placeholder="Post ID"
-                                :disabled="selectedId !== 'new'"
-                            >
-                            <label for="userField">
-                                User
-                                <small v-show="selectedId !== 'new'">(read only)</small>
-                            </label>
-                            <input
-                                id="userField"
-                                v-model="edit.user"
-                                type="text"
-                                placeholder="User"
-                                :disabled="selectedId !== 'new'"
-                            >
-                            <label for="userField">Date</label>
-                            <input
-                                id="dateField"
-                                v-model="edit.date"
-                                type="text"
-                                placeholder="Date"
-                            >
-                            <a
-                                href="#"
-                                class="button"
-                                @click.prevent="save"
-                            >Save</a>
-                            <a
-                                href="#"
-                                class="button button-outline"
-                                @click.prevent="showEditor = false"
-                            >Close</a>
-                            <div
-                                v-show="editorError !== ''"
-                                class="error"
-                            >
-                                {{ editorError }}
+                                <option
+                                    value="none"
+                                    :selected="true"
+                                >
+                                    -- select option --
+                                </option>
+                                <option
+                                    value="new"
+                                >
+                                    NEW LIKE
+                                </option>
+                                <option
+                                    v-for="(id, idx) in ids"
+                                    :key="idx"
+                                    :value="id"
+                                >
+                                    {{ id }}
+                                </option>
+                            </select>
+                            <div class="gray">
+                                <div
+                                    v-show="selectedId === 'none'"
+                                    class="graybg"
+                                />
+                                <label for="postidField">
+                                    Post ID
+                                    <small v-show="selectedId !== 'new'">(read only)</small>
+                                </label>
+                                <input
+                                    id="postidField"
+                                    v-model="edit.postid"
+                                    type="text"
+                                    placeholder="Post ID"
+                                    :disabled="selectedId !== 'new'"
+                                >
+                                <label for="userField">
+                                    User
+                                    <small v-show="selectedId !== 'new'">(read only)</small>
+                                </label>
+                                <input
+                                    id="userField"
+                                    v-model="edit.user"
+                                    type="text"
+                                    placeholder="User"
+                                    :disabled="selectedId !== 'new'"
+                                >
+                                <label for="userField">Date</label>
+                                <input
+                                    id="dateField"
+                                    v-model="edit.date"
+                                    type="text"
+                                    placeholder="Date"
+                                >
+                                <a
+                                    href="#"
+                                    class="button"
+                                    @click.prevent="save"
+                                >Save</a>
+                                <a
+                                    href="#"
+                                    class="button button-outline"
+                                    @click.prevent="showEditor = false"
+                                >Close</a>
+                                <div
+                                    v-show="editorError !== ''"
+                                    class="error"
+                                >
+                                    {{ editorError }}
+                                </div>
                             </div>
-                        </div>
-                    </fieldset>
-                </form>
+                        </fieldset>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
@@ -286,6 +284,7 @@ export default {
 <style lang="postcss" scoped>
 .header {
     margin-top: 3rem;
+    text-align: center;
 }
 
 .gray {
