@@ -5,13 +5,13 @@ legit social media platform. You may view [original project instructions here.](
 
 ## Features and Developer Notes
 
-- Proper HTTP response codes (200, 404, 422, 500)
+- Proper HTTP response codes (200, 400, 404, 500)
 - Request rate limiting to reduce abuse
+- Use express-validator to validate query/body request parameters
 - Map -> Reduce style in-memory data manager for performance
 - In-memory store is initialized at server start so that the data summarization overhead is not incurred on each request with the notable exception of timezone calculation
 - Project organized so that the codebase may grow as needed
-- Unit tests for ingesting and summarizing CSV data
-- Decoupled app CSV from test CSV for experiments
+- Unit tests for ingesting and summarizing CSV data, decoupled app CSV from test CSV for experiments
 - Built with flexibility in mind so that the codebase may grow as needed
 - Dates are stored in-memory as UTC strings and converted to DateTime objects via the `luxon` module
 - Where summaries of dates are needed timezone support is added via `timezone` request parameter. If the parameter is left unspecified then it will default to `'America/New_York'`
@@ -51,7 +51,7 @@ legit social media platform. You may view [original project instructions here.](
 **HTTP Responses**
 - GET [200](http://localhost:3000/)
 - GET [404](http://localhost:3000/someplace)
-- GET [422, Malformed Query Parameters](http://localhost:3000/users/1/likes?sum=foo)
+- GET [400, Malformed Query Parameters](http://localhost:3000/users/1/likes?summary=foo)
 - GET [500](http://localhost:3000/error)
 
 ## Learn More

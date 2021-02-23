@@ -15,8 +15,8 @@ module.exports = function(json) {
     });
 
     // sort likes
-    let out = _.map(sum, (value, prop) => ({ "postid": parseInt(prop), "likes": value}));
+    let out = _.map(sum, (value, prop) => ({ 'postid': parseInt(prop), 'likes': value}));
     out = _.orderBy(out, 'likes', 'desc');
 
     return out;
-}
+};

@@ -1,10 +1,10 @@
 const fs = require('fs').promises;
 const parse = require('csv-parse/lib/sync');
-const _ = require("lodash");
+const _ = require('lodash');
 
 module.exports = async function(path) {
     const content = await fs.readFile(__dirname + '/' + path, 'utf-8');
-    let records = parse(content)
+    let records = parse(content);
 
     let cols = _.first(records);
     cols = _.map(cols, col => {
@@ -30,4 +30,4 @@ module.exports = async function(path) {
     });
 
     return parsed;
-}
+};

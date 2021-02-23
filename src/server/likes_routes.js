@@ -1,6 +1,8 @@
-const _ = require("lodash");
-const summaryPopularDays = require("./data/summary/popular_days.js");
-const summaryStreaks = require("./data/summary/streaks.js");
+const _ = require('lodash');
+const { query, validationResult } = require('express-validator');
+const { DateTime } = require('luxon');
+const summaryPopularDays = require('./data/summary/popular_days.js');
+const summaryStreaks = require('./data/summary/streaks.js');
 
 module.exports = function(app) {
     function popular(req, res, limit) {
@@ -43,29 +45,34 @@ module.exports = function(app) {
         }
     }
 
-    function malformed(req, res) {
-        res.status(422).json({ status: "error", desc: "malformed query parameters" });
-    }
+    app.get('/users/:userId/likes',
+        query('summary').isIn(['all', 'popular', 'fans', 'popularDays', 'streaks']).optional(),
+        query('limit').isNumeric().optional(),
+        query('timezone').custom((value) => {
+            let bogus = DateTime.local().setZone(value);
+            return bogus.isValid;
+        }).optional(),
+        function (req, res) {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(400).json({ errors: errors.array() });
+            }
 
-    app.get("/users/:userId/likes", function (req, res) {
-        let summary = req.query.summary;
-        let timezone = req.query.timezone;
-        let limit = req.query.limit;
-        if (limit) limit = parseInt(limit);
-        let isMalformedQueryParams = _.keys(req.query).length >= 2 || (_.keys(req.query).length === 1 && !req.query.limit);
+            let summary = req.query.summary;
+            let timezone = req.query.timezone;
+            let limit = req.query.limit;
+            if (limit) limit = parseInt(limit);
 
-        if (summary === "popular") {
-            popular(req, res, limit);
-        } else if (summary === "fans") {
-            fans(req, res, limit);
-        } else if (summary === "popularDays") {
-            popularDays(req, res, timezone);
-        } else if (summary === "streaks") {
-            streaks(req, res, timezone);
-        } else if (isMalformedQueryParams) {
-            malformed(req, res);
-        } else {
-            all(req, res, limit);
-        }
-    });
-}
+            if (summary === 'popular') {
+                popular(req, res, limit);
+            } else if (summary === 'fans') {
+                fans(req, res, limit);
+            } else if (summary === 'popularDays') {
+                popularDays(req, res, timezone);
+            } else if (summary === 'streaks') {
+                streaks(req, res, timezone);
+            } else {
+                all(req, res, limit);
+            }
+        });
+};

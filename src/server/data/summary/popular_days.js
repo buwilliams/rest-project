@@ -1,16 +1,16 @@
 const _ = require('lodash');
-const { DateTime } = require("luxon");
+const { DateTime } = require('luxon');
 
 module.exports = function(json, timezone) {
     timezone = timezone || 'America/New_York';
-    let sum = [0, 0, 0, 0, 0, 0, 0]
+    let sum = [0, 0, 0, 0, 0, 0, 0];
 
     let bogus = DateTime.local().setZone(timezone);
-    if(!bogus.isValid) throw new Error("Invalid timezone " + timezone);
+    if(!bogus.isValid) throw new Error('Invalid timezone ' + timezone);
 
     // count likes by day
     _.each(json, row => {
-        let utcDate = DateTime.fromISO(row.date, { zone: "utc" });
+        let utcDate = DateTime.fromISO(row.date, { zone: 'utc' });
         let local = utcDate.setZone(timezone);
         let day = local.toFormat('E') - 1;
         sum[day]++;
@@ -25,7 +25,7 @@ module.exports = function(json, timezone) {
         'saturday': 0,
         'sunday': 0,
         'timezone': timezone
-    }
+    };
     let keys = _.keys(out);
 
     _.each(sum, (value, idx) => {
@@ -34,4 +34,4 @@ module.exports = function(json, timezone) {
     });
 
     return out;
-}
+};

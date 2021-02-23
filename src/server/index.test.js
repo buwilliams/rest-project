@@ -1,3 +1,3 @@
 test('ensure test framework is working', () => {
-  expect(true).toBe(true);
+    expect(true).toBe(true);
 });

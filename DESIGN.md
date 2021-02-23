@@ -116,7 +116,7 @@
 - Add route to return all likes
 - Add `testdata.csv` and use that in tests for flexibility
 - `summary=popular&limit=1` code/route/tests for summary of: Your most popular post(s) `requires limit parameter, default to 1`
-- Handle 422 http errors from bad/malformed query parameters
+- Handle 400 http errors from bad/malformed query parameters
 - Moved likes route into a separate file `likes_route.js` to make it easier to read the code
 - `summary=fans&limit=1` code/route/tests for summary of: Your biggest fan(s) (the person who has "liked" your posts the most times) `requires limit parameter, default to 1`
 - `summary=popularDays` code/route/tests for summary of: The day(s) of the week when you got the most "likes"
@@ -130,3 +130,7 @@
 - Create menu for page for each request
 - Create output window to show JSON response
 - Create an editor for modifying the likes resource
+- Added express-validator to help validate/sanitize user input
+- Added Supertest for integration tests
+- Use express-validator to validation query parameters for likes resource
+- Write unit tests for query parameter validation

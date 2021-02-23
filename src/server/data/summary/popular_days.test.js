@@ -1,5 +1,5 @@
-const ingest = require("../ingest.js");
-const summaryPopularDays = require("./popular_days.js");
+const ingest = require('../ingest.js');
+const summaryPopularDays = require('./popular_days.js');
 
 test('invalid timezone should throw an error', () => {
     const json = [{date:'2015-01-01T01:00:00.000Z'}];
@@ -20,7 +20,7 @@ test('popular days should return the correct count for ISO timestamp by timezone
 
     const la = summaryPopularDays([
         { date: '2021-02-05T05:00:00.000Z' }
-    ], "America/Los_Angeles");
+    ], 'America/Los_Angeles');
     expect(la.monday).toBe(0);
     expect(la.tuesday).toBe(0);
     expect(la.wednesday).toBe(0);
@@ -46,7 +46,7 @@ test('popular days should return the correct count for multiple days', () => {
 });
 
 test('popular days should return the correct count for testdata with NY timezone', async () => {
-    const json = await ingest("testdata.csv");
+    const json = await ingest('testdata.csv');
     let ny = summaryPopularDays(json);
     expect(ny.monday).toBe(1);
     expect(ny.tuesday).toBe(3);
@@ -58,8 +58,8 @@ test('popular days should return the correct count for testdata with NY timezone
 });
 
 test('popular days should return the correct count for testdata with LA timezone', async () => {
-    const json = await ingest("testdata.csv");
-    let la = summaryPopularDays(json, "America/Los_Angeles");
+    const json = await ingest('testdata.csv');
+    let la = summaryPopularDays(json, 'America/Los_Angeles');
     expect(la.monday).toBe(2);
     expect(la.tuesday).toBe(4);
     expect(la.wednesday).toBe(4);

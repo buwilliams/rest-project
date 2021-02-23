@@ -1,19 +1,19 @@
 const _ = require('lodash');
-const { DateTime } = require("luxon");
+const { DateTime } = require('luxon');
 
 module.exports = function(json, timezone) {
     timezone = timezone || 'America/New_York';
     let dates = {};
 
     let bogus = DateTime.local().setZone(timezone);
-    if(!bogus.isValid) throw new Error("Invalid timezone " + timezone);
+    if(!bogus.isValid) throw new Error('Invalid timezone ' + timezone);
 
     // impossible to have a streak with less than three dates
     if(json.length < 3) return [];
 
     // count likes by date and timezone
     _.each(json, row => {
-        let utcDate = DateTime.fromISO(row.date, { zone: "utc" });
+        let utcDate = DateTime.fromISO(row.date, { zone: 'utc' });
         let local = utcDate.setZone(timezone);
         let key = local.toFormat('yyyy-MM-dd').toString();
         if(dates[key]) dates[key]++;
@@ -21,7 +21,7 @@ module.exports = function(json, timezone) {
     });
 
     // convert to array
-    let sortedDates = _.map(_.keys(dates), key => ({ "date": key, "likes": dates[key] }));
+    let sortedDates = _.map(_.keys(dates), key => ({ 'date': key, 'likes': dates[key] }));
     sortedDates = _.orderBy(sortedDates, 'date', 'asc');
     //console.log(sortedDates);
 
@@ -77,4 +77,4 @@ module.exports = function(json, timezone) {
 
     //return { sortedDates, streaks };
     return streaks;
-}
+};
