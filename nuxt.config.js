@@ -36,7 +36,7 @@ export default {
         ]
     },
     css: [],
-    plugins: [],
+    plugins: ['~/src/plugins/posthog.js'],
     components: false,
     buildModules: [],
     modules: [],

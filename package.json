@@ -28,7 +28,8 @@
     "express-validator": "^6.10.0",
     "lodash": "^4.17.20",
     "luxon": "^1.25.0",
-    "nuxt": "^2.15.1"
+    "nuxt": "^2.15.1",
+    "posthog-js": "^1.8.8"
   },
   "devDependencies": {
     "eslint": "^7.20.0",
